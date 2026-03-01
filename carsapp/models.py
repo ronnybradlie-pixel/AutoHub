@@ -13,7 +13,7 @@ class Car(models.Model):
     )
 
     dealership = models.ForeignKey(    
-        'dealerships.DealershipCompany',
+        'companyapp.DealershipCompany',
         on_delete=models.CASCADE,
         related_name='cars'
     )    

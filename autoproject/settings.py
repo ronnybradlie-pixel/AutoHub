@@ -132,4 +132,4 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-AUTH_USER_MODEL = 'auto.User'
+AUTH_USER_MODEL = 'autoapp.User'

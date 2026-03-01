@@ -13,7 +13,7 @@ class RentalBooking(models.Model):
     )
 
     car = models.ForeignKey(
-        'cars.Car',
+        'carsapp.Car',
         on_delete=models.CASCADE,
         related_name='rentals'
     )
@@ -41,7 +41,7 @@ class Purchase(models.Model):
     )
 
     car = models.OneToOneField(
-        'cars.Car',
+        'carsapp.Car',
         on_delete=models.CASCADE,
         related_name='purchase'
     )

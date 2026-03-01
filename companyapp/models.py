@@ -31,29 +31,30 @@ class CompanyRegistrationRequest(models.Model):
 
     def __str__(self):
         return self.company_name
-    
-    class DealershipCompany(models.Model):
 
-        name = models.CharField(max_length=255)
-        email = models.EmailField()
-        phone = models.CharField(max_length=20)
-        city = models.CharField(max_length=100)
 
-        license_number = models.CharField(max_length=100)
-        license_document = models.FileField(upload_to='approved_licenses/')
+class DealershipCompany(models.Model):
 
-        is_active = models.BooleanField(default=True)
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    city = models.CharField(max_length=100)
 
-        approved_by = models.ForeignKey(
-            settings.AUTH_USER_MODEL, 
-            on_delete=models.SET_NULL,
-            null=True,
-            related_name='approved_dealerships'
-            )
-        approved_at = models.DateTimeField()
+    license_number = models.CharField(max_length=100)
+    license_document = models.FileField(upload_to='approved_licenses/')
 
-        created_at = models.DateTimeField(auto_now_add=True)
-        updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
 
-        def __str__(self):
-            return self.name
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='approved_dealerships'
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

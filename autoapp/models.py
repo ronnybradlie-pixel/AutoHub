@@ -35,7 +35,7 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=20, blank=True,)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='USER') 
     dealership = models.ForeignKey(
-        'dealerships.DealershipCompany', 
+        'companyapp.DealershipCompany', 
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
