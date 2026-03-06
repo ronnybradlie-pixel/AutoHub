@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Car(models.Model):
@@ -70,7 +71,7 @@ class CarImage(models.Model):
         related_name='images'
     )
 
-    image = models.ImageField(upload_to='car_images/')
+    image=CloudinaryField('image')
     is_primary = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
