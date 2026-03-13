@@ -1,10 +1,10 @@
-#Automotive Marketplace Platform
+# Automotive Marketplace Platform
 **Overview**
 
 > The Automotive Marketplace Platform is a web-based system that allows users to buy, sell, and rent cars through verified dealership companies. Individual users cannot directly list cars; instead, they submit their vehicles through approved dealership companies.
 Each dealership must be verified by a super administrator using their business license before they can operate on the platform.Dealership companies manage vehicle listings, approve cars submitted by users, and can also sell or rent their own vehicles through the platform.
 
-#Problem the System Solves
+# Problem the System Solves
 
 Many online car marketplaces suffer from:
 
@@ -26,7 +26,7 @@ Many online car marketplaces suffer from:
 
 4.Ensuring vehicle specification validation
 
-##System Objectives
+## System Objectives
 
 The project aims to:
 
@@ -40,7 +40,7 @@ Provide detailed car specifications
 
 Ensure secure and organized vehicle listings
 
-##System Users
+## System Users
 1. Super Administrator
 
 Responsible for platform management.
@@ -53,7 +53,7 @@ Each dealership has its own admin.
 
 Regular users who use the platform.
 
-##Core Features
+## Core Features
 1. User Authentication
 
 2. Dealership Company Registration
