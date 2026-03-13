@@ -1,7 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Mainlayout from "../assets/Components/Mainlayout";
+import Home from "./assets/Components/Home";
+import Cars from "./assets/Components/Cars";
+import Rent from "./assets/Components/Rent";
+import Sell from "./assets/Components/Sell";
+import About from "./assets/Components/About";
+import Login from "./assets/Components/Login";
+import Register from "./assets/Components/Register";
+import Dashboard from "./assets/Components/Dashboard";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -32,4 +38,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

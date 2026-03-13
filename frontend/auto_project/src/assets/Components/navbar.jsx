@@ -1,41 +1,51 @@
-import { link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/images/Autohub logo.png";
 
 const Navbar = () => {
-    return (
-        <nav className="bg-[#C0C0C0] shadow-md">
-            <div className="max-w-7x1 mx-auto px-4 py-3 flex justify-between items-center">
-
-        <link to="/" className="flex items-center gap-2">
+  return (
+    <nav className="bg-[#C0C0C0] shadow-md">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+        <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="AutoHub Logo" className="h-10 w-10 object-contain" />
           <span className="text-xl font-bold text-[#6D28D9]">AutoHub</span>
-        </link> 
+        </Link>
 
-        <div className="flex text-gray-800 font-medium gap-6">
-            <link to="/">Home</link>
-            <link to="/Cars">Cars</link>
-            <link to="/Rent">Rent</link>
-            <link to="/Sell">Sell</link>
-            <link to="/about">About</link>
+        <div className="flex flex-wrap text-gray-800 font-medium gap-4">
+          <Link to="/" className="hover:text-purple-700">
+            Home
+          </Link>
+          <Link to="/cars" className="hover:text-purple-700">
+            Cars
+          </Link>
+          <Link to="/rent" className="hover:text-purple-700">
+            Rent
+          </Link>
+          <Link to="/sell" className="hover:text-purple-700">
+            Sell
+          </Link>
+          <Link to="/about" className="hover:text-purple-700">
+            About
+          </Link>
         </div>
 
         <div className="flex gap-3">
-          <link
+          <Link
             to="/login"
             className="px-4 py-2 border border-purple-500 rounded-lg hover:bg-purple-100"
           >
             Login
-          </link>
+          </Link>
 
-          <link
+          <Link
             to="/register"
             className="px-4 py-2 bg-[#A78BFA] text-white rounded-lg hover:bg-[#8B5CF6]"
           >
             Register
-          </link>
+          </Link>
         </div>
-
-            </div>
-        </nav>
-    );
+      </div>
+    </nav>
+  );
 };
+
+export default Navbar;
