@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/images/Autohub logo.png";
+import logo from "..images/Autohub logo.png";
 
 const Navbar = () => {
   return (
