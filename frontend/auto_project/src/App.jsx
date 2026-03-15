@@ -2,8 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Mainlayout from "./assets/Components/Mainlayout";
 import Home from "./assets/Components/Home";
 import Cars from "./assets/Components/Cars";
-import Rent from "./assets/Components/Rent";
-import Sell from "./assets/Components/Sell";
 import About from "./assets/Components/About";
 import Login from "./assets/Components/Login";
 import Register from "./assets/Components/Register";
@@ -16,8 +14,6 @@ function App() {
         <Route path="/" element={<Mainlayout />}>
           <Route index element={<Home />} />
           <Route path="cars" element={<Cars />} />
-          <Route path="rent" element={<Rent />} />
-          <Route path="sell" element={<Sell />} />
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
