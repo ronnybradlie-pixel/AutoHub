@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Mainlayout from "./assets/Components/Mainlayout";
-import Home from "./assets/Components/Home";
-import Cars from "./assets/Components/Cars";
-import About from "./assets/Components/About";
-import Login from "./assets/Components/Login";
-import Register from "./assets/Components/Register";
-import Dashboard from "./assets/Components/Dashboard";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Mainlayout from "./Components/Mainlayout";
+import Home from "./Components/Home";
+import Cars from "./Components/Cars";
+import About from "./Components/About";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
+import Dashboard from "./Components/Dashboard";
 
 function App() {
   return (
@@ -18,6 +18,8 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="dashboard" element={<Dashboard />} />
+          {/* Redirect unknown routes back to Home (landing page) */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

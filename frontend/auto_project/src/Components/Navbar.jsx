@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import logo from "..images/Autohub logo.png";
+import logo from "../assets/images/Autohublogo.png";
 
 const Navbar = () => {
   return (
     <nav className="bg-[#C0C0C0] shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="AutoHub Logo" className="h-10 w-10 object-contain" />
+          <img src={logo} alt="AutoHub Logo" className="h-4 w-6 object-contain" />
           <span className="text-xl font-bold text-[#6D28D9]">AutoHub</span>
         </Link>
 
