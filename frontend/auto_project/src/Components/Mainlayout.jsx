@@ -4,7 +4,7 @@ import Navbar from "./navbar";
 
 const Mainlayout = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#000080]">
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Wrap the routed content (Outlet children) in a container */}

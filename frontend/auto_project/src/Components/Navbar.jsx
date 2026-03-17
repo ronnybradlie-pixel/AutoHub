@@ -3,10 +3,10 @@ import logo from "../assets/images/Autohublogo.png";
 
 const Navbar = () => {
   return (
-    <nav className="bg-[#C0C0C0] shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+    <nav className="bg-white shadow-md">
+      <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="AutoHub Logo" className="h-4 w-6 object-contain" />
+          <img src={logo} alt="AutoHub Logo" className="h-32 w-30 object-contain" />
           <span className="text-xl font-bold text-[#6D28D9]">AutoHub</span>
         </Link>
 
