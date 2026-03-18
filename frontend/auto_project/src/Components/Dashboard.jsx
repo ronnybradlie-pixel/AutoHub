@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -18,13 +18,13 @@ const Dashboard = () => {
   const fetchData = async (currentUser) => {
     try {
       if (currentUser.role === 'SUPER_ADMIN') {
-        const companiesRes = await axios.get('/api/company/registrations/');
+        const companiesRes = await api.get('/company/registrations/');
         setCompanies(companiesRes.data);
       } else if (currentUser.role === 'DEALERSHIP_ADMIN') {
         const [carsRes, rentalsRes, purchasesRes] = await Promise.all([
-          axios.get(`/api/cars/?dealership=${currentUser.dealership}`),
-          axios.get('/api/booking/rentals/'),
-          axios.get('/api/booking/purchases/')
+          api.get(`/cars/?dealership=${currentUser.dealership}`),
+          api.get('/booking/rentals/'),
+          api.get('/booking/purchases/')
         ]);
         setCars(carsRes.data);
         setRentals(rentalsRes.data);
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   const approveCompany = async (companyId) => {
     try {
-      await axios.post(`/api/company/registrations/${companyId}/approve/`);
+      await api.post(`/company/registrations/${companyId}/approve/`);
       fetchData(user);
     } catch (error) {
       console.error('Error approving company:', error);
@@ -48,7 +48,7 @@ const Dashboard = () => {
 
   const approveCar = async (carId) => {
     try {
-      await axios.post(`/api/cars/${carId}/approve/`);
+      await api.post(`/cars/${carId}/approve/`);
       fetchData(user);
     } catch (error) {
       console.error('Error approving car:', error);

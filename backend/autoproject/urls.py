@@ -20,7 +20,7 @@ from autoapp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auto/', include('autoapp.urls')),
+    path('api/auth/', include('autoapp.urls')),
     path('api/cars/', include('carsapp.urls')),
     path('api/booking/', include('bookingapp.urls')),
     path('api/company/', include('companyapp.urls')),

@@ -23,13 +23,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['first_name',
-                  'last_name'
-                  'email',
-                  'id_number'
-                  'phone_number',
-                  'username' 
-                  'password'
+        fields = [
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'username',
+            'password'
         ]
 
     def create(self, validated_data):
