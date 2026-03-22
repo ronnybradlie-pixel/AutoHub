@@ -20,8 +20,8 @@ const Navbar = () => {
           <Link to="/rent" className="hover:text-purple-700">
             Rent
           </Link>
-          <Link to="/sell" className="hover:text-purple-700">
-            Sell
+          <Link to="/buy" className="hover:text-purple-700">
+            Buy
           </Link>
           <Link to="/about" className="hover:text-purple-700">
             About
