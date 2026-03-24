@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 const Home = () => {
-  const [featuredCars, setFeaturedCars] = useState([]);
+  const [allCars, setAllCars] = useState([]); // Store original data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // --- FILTER STATES ---
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all"); // 'all', 'buy', 'rent'
 
   useEffect(() => {
     let mounted = true;
@@ -12,7 +16,23 @@ const Home = () => {
         const res = await fetch("/api/cars");
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
         const data = await res.json();
-        if (mounted) setFeaturedCars(data);
+
+        // Map backend data to the frontend "specs" format
+        const formatted = data.map(car => ({
+          id: car.id,
+          title: `${car.brand} ${car.model}`,
+          subtitle: car.dealership_name || "Verified Dealership",
+          image: car.photo || car.image || "https://via.placeholder.com/400x300?text=No+Image",
+          price: car.is_for_rent ? `${car.rental_price_per_day}/day` : `$${car.price?.toLocaleString()}`,
+          is_for_rent: car.is_for_rent, // Boolean from backend
+          specs: [
+            { label: "Year", value: car.year },
+            { label: "Type", value: car.is_for_rent ? "Rental" : "For Sale" },
+            { label: "Mileage", value: `${car.mileage} km` }
+          ]
+        }));
+
+        if (mounted) setAllCars(formatted);
       } catch (err) {
         if (mounted) setError(err.message || "Failed to load cars");
       } finally {
@@ -20,98 +40,132 @@ const Home = () => {
       }
     };
     fetchCars();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
-  return (
-    <div className="space-y-10 md:flex md:space-y-0 md:items-start md:gap-8 text-white">
-      <aside className="md:w-1/3">
-        <div className="rounded-2xl bg-gray-900/80 p-6 shadow-2xl backdrop-blur-md">
-        <header className="rounded-xl bg-transparent p-6">
-          <h1 className="text-3xl font-bold">Welcome to AutoHub</h1>
-          <p className="mt-3 text-white/70">
-            AutoHub connects buyers, sellers, renters, and approved dealerships in one
-            place. Explore our car listings, post vehicles for sale, or rent cars from
-            trusted dealerships.
-          </p>
-        </header>
+  // --- FILTER LOGIC ---
+  const filteredCars = useMemo(() => {
+    return allCars.filter(car => {
+      const matchesSearch = car.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = 
+        categoryFilter === "all" || 
+        (categoryFilter === "rent" && car.is_for_rent) || 
+        (categoryFilter === "buy" && !car.is_for_rent);
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [allCars, searchQuery, categoryFilter]);
 
-        <section className="grid gap-6">
-          <div className="rounded-xl bg-transparent p-6">
-            <h2 className="text-xl font-semibold mb-2">Buy a Car</h2>
-            <p className="text-white/80">
-              Browse verified cars available for purchase from trusted dealerships.
+  if (loading) return <div className="p-20 text-center text-white">Loading AutoHub Inventory...</div>;
+
+  return (
+    <div className="space-y-10 md:flex md:space-y-0 md:items-start md:gap-8 text-white p-4">
+      {/* SIDEBAR WITH CATEGORY FILTERS */}
+      <aside className="md:w-1/3 sticky top-4">
+        <div className="rounded-2xl bg-gray-900/80 p-6 shadow-2xl backdrop-blur-md border border-white/10">
+          <header className="mb-6">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">
+              AutoHub
+            </h1>
+            <p className="mt-3 text-white/70 text-sm">
+              Your premium gateway to verified automotive deals.
             </p>
-          </div>
-          <div className="rounded-xl bg-transparent p-6">
-            <h2 className="text-xl font-semibold mb-2">Rent a Car</h2>
-            <p className="text-white/80">
-              Rent a vehicle for as long as you need from dealerships in your area.
-            </p>
-          </div>
-          <div className="rounded-xl bg-transparent p-6">
-            <h2 className="text-xl font-semibold mb-2">Sell a Car</h2>
-            <p className="text-white/80">
-              List your car through an approved dealership and reach more buyers.
-            </p>
-          </div>
-        </section>
+          </header>
+
+          <section className="grid gap-4">
+            {/* Filter Card: All */}
+            <div 
+              onClick={() => setCategoryFilter('all')}
+              className={`cursor-pointer rounded-xl p-4 transition-all border ${categoryFilter === 'all' ? 'bg-purple-600/30 border-purple-500' : 'bg-transparent border-white/5 hover:bg-white/5'}`}
+            >
+              <h2 className="text-lg font-semibold">All Vehicles</h2>
+              <p className="text-xs text-white/60">View our entire collection.</p>
+            </div>
+
+            {/* Filter Card: Buy */}
+            <div 
+              onClick={() => setCategoryFilter('buy')}
+              className={`cursor-pointer rounded-xl p-4 transition-all border ${categoryFilter === 'buy' ? 'bg-purple-600/30 border-purple-500' : 'bg-transparent border-white/5 hover:bg-white/5'}`}
+            >
+              <h2 className="text-lg font-semibold">Buy a Car</h2>
+              <p className="text-xs text-white/60">Search for cars to own permanently.</p>
+            </div>
+
+            {/* Filter Card: Rent */}
+            <div 
+              onClick={() => setCategoryFilter('rent')}
+              className={`cursor-pointer rounded-xl p-4 transition-all border ${categoryFilter === 'rent' ? 'bg-purple-600/30 border-purple-500' : 'bg-transparent border-white/5 hover:bg-white/5'}`}
+            >
+              <h2 className="text-lg font-semibold">Rent a Car</h2>
+              <p className="text-xs text-white/60">Daily and monthly rental options.</p>
+            </div>
+          </section>
         </div>
       </aside>
 
+      {/* MAIN CONTENT */}
       <main className="md:flex-1">
-        <section>
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold">Featured Cars</h2>
-            <p className="mt-2 text-white/80 max-w-2xl">
-              Browse a selection of top cars that are currently available.
-            </p>
+        {/* SEARCH & HEADER */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-semibold capitalize">{categoryFilter} Cars</h2>
+            <p className="text-white/60 text-sm">Showing {filteredCars.length} results</p>
           </div>
+          <div className="relative">
+            <input 
+              type="text" 
+              placeholder="Search make or model..."
+              className="bg-gray-900/50 border border-white/10 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-64 transition"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuredCars.map((car) => (
-              <div
-                key={car.id}
-                className="rounded-xl bg-transparent p-8 flex flex-col justify-between gap-6 min-h-[280px]"
-              >
-                <div className="overflow-hidden rounded-lg">
-                  <img
-                    src={car.image}
-                    alt={car.title}
-                    className="h-52 w-full object-cover transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-
-                <div className="flex-1 flex flex-col justify-between">
-                  <div className="flex flex-col gap-3">
-                    <div>
-                      <h3 className="text-lg font-semibold">{car.title}</h3>
-                      <p className="text-sm text-white/80">{car.subtitle}</p>
-                    </div>
-                    <span className="text-right text-lg font-bold text-purple-200">
-                      {car.price}
-                    </span>
-                  </div>
-
-                  <div className="mt-4 grid gap-2 sm:grid-cols-2 text-sm text-white/80">
-                    {car.specs.map((spec) => (
-                      <div key={spec.label} className="flex justify-between">
-                        <span className="font-medium text-white">{spec.label}</span>
-                        <span>{spec.value}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <button className="mt-6 self-start rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-700">
-                    View Details
-                  </button>
-                </div>
+        {/* CAR GRID */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredCars.map((car) => (
+            <div key={car.id} className="rounded-2xl bg-gray-900/40 border border-white/5 p-4 flex flex-col hover:border-purple-500/50 transition-all group shadow-lg">
+              <div className="overflow-hidden rounded-xl h-48 mb-4">
+                <img
+                  src={car.image}
+                  alt={car.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
               </div>
-            ))}
+
+              <div className="flex flex-col flex-1">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h3 className="font-bold text-lg">{car.title}</h3>
+                    <p className="text-xs text-purple-300">{car.subtitle}</p>
+                  </div>
+                  <span className="text-purple-200 font-black">{car.price}</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 py-4 border-t border-white/5 mt-auto">
+                  {car.specs.map((spec) => (
+                    <div key={spec.label} className="flex flex-col">
+                      <span className="text-[10px] uppercase text-white/40">{spec.label}</span>
+                      <span className="text-sm font-medium">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <button className="mt-4 w-full rounded-xl bg-purple-600 py-3 text-sm font-bold text-white hover:bg-purple-500 shadow-lg shadow-purple-900/20 transition-all active:scale-95">
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* EMPTY STATE */}
+        {filteredCars.length === 0 && (
+          <div className="text-center py-20 bg-gray-900/20 rounded-3xl border border-dashed border-white/10">
+            <p className="text-white/40">No vehicles found matching your criteria.</p>
           </div>
-        </section>
+        )}
       </main>
     </div>
   );

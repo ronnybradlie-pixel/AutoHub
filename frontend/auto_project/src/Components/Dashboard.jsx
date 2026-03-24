@@ -1,186 +1,107 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import api from '../api/axios';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [companies, setCompanies] = useState([]);
   const [cars, setCars] = useState([]);
-  const [rentals, setRentals] = useState([]);
-  const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // NEW: Search State for the Super Admin
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem('user'));
     setUser(currentUser);
-    fetchData(currentUser);
+    if (currentUser) fetchData(currentUser);
   }, []);
 
   const fetchData = async (currentUser) => {
     try {
+      setLoading(true);
       if (currentUser.role === 'SUPER_ADMIN') {
-        const companiesRes = await api.get('/company/registrations/');
-        setCompanies(companiesRes.data);
+        const res = await api.get('/company/registrations/');
+        setCompanies(res.data);
       } else if (currentUser.role === 'DEALERSHIP_ADMIN') {
-        const [carsRes, rentalsRes, purchasesRes] = await Promise.all([
-          api.get(`/cars/?dealership=${currentUser.dealership}`),
-          api.get('/booking/rentals/'),
-          api.get('/booking/purchases/')
+        const [carsRes] = await Promise.all([
+          api.get(`/cars/?dealership=${currentUser.dealership}`)
         ]);
         setCars(carsRes.data);
-        setRentals(rentalsRes.data);
-        setPurchases(purchasesRes.data);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch (err) {
+      console.error('Fetch error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const approveCompany = async (companyId) => {
-    try {
-      await api.post(`/company/registrations/${companyId}/approve/`);
-      fetchData(user);
-    } catch (error) {
-      console.error('Error approving company:', error);
-    }
-  };
+  // - FILTER LOGIC -
+  const filteredCompanies = useMemo(() => {
+    return companies.filter(c => 
+      c.company_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [companies, searchTerm]);
 
-  const approveCar = async (carId) => {
-    try {
-      await api.post(`/cars/${carId}/approve/`);
-      fetchData(user);
-    } catch (error) {
-      console.error('Error approving car:', error);
-    }
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (!user) return <div>Please login</div>;
+  if (loading) return <div className="p-10 text-center">Loading System Data...</div>;
 
   return (
-    <div className="dashboard p-6">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-extrabold text-slate-800">Control Panel</h1>
+        <div className="text-sm font-medium bg-blue-100 text-blue-700 px-4 py-1 rounded-full">
+          {user?.role.replace('_', ' ')}
+        </div>
+      </div>
 
-      {user.role === 'SUPER_ADMIN' && (
-        <div className="super-admin-section">
-          <h2 className="text-2xl font-semibold mb-4">Company Approvals</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {companies.filter(c => c.status === 'PENDING').map(company => (
-              <div key={company.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-medium">{company.company_name}</h3>
-                <p>Email: {company.company_email}</p>
-                <p>License: {company.company_license_number}</p>
-                <button
-                  onClick={() => approveCompany(company.id)}
-                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  Approve
-                </button>
-              </div>
-            ))}
+      {user?.role === 'SUPER_ADMIN' && (
+        <div className="space-y-8">
+          {/* Search Bar */}
+          <div className="max-w-md">
+            <input 
+              type="text"
+              placeholder="Search companies by name..."
+              className="w-full p-3 rounded-xl border border-gray-200 shadow-sm outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
 
-          <h2 className="text-2xl font-semibold mb-4 mt-8">Approved Companies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {companies.filter(c => c.status === 'APPROVED').map(company => (
-              <div key={company.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-medium">{company.name}</h3>
-                <p>Email: {company.email}</p>
-                <p>City: {company.city}</p>
-              </div>
-            ))}
-          </div>
+          <section>
+            <h2 className="text-xl font-bold mb-4 flex items-center">
+              <span className="mr-2">⏳</span> Pending Approvals
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCompanies.filter(c => c.status === 'PENDING').map(company => (
+                <div key={company.id} className="bg-white p-6 rounded-2xl shadow-sm border border-orange-100 border-l-4 border-l-orange-400">
+                  <h3 className="text-lg font-bold">{company.company_name}</h3>
+                  <p className="text-gray-500 text-sm mb-4">{company.company_email}</p>
+                  <button
+                    onClick={() => approveCompany(company.id)}
+                    className="w-full py-2 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition"
+                  >
+                    Review & Approve
+                  </button>
+                </div>
+              ))}
+              {filteredCompanies.filter(c => c.status === 'PENDING').length === 0 && (
+                <p className="text-gray-400 italic">No pending applications found.</p>
+              )}
+            </div>
+          </section>
         </div>
       )}
 
-      {user.role === 'DEALERSHIP_ADMIN' && (
-        <div className="dealership-admin-section">
-          <h2 className="text-2xl font-semibold mb-4">Car Approvals</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {cars.filter(c => c.status === 'PENDING').map(car => (
-              <div key={car.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-medium">{car.title}</h3>
-                <p>Brand: {car.brand} {car.model}</p>
-                <p>Year: {car.year}</p>
-                <p>Mileage: {car.mileage}</p>
-                <button
-                  onClick={() => approveCar(car.id)}
-                  className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  Approve
-                </button>
-              </div>
-            ))}
-          </div>
+      {user?.role === 'DEALERSHIP_ADMIN' && (
+        <div className="space-y-8">
+          <h2 className="text-xl font-bold">Your Fleet Overview</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
 
-          <h2 className="text-2xl font-semibold mb-4 mt-8">Your Cars</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {cars.map(car => (
-              <div key={car.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-medium">{car.title}</h3>
-                <p>Status: {car.status}</p>
-                <p>Price: ${car.price}</p>
-                {car.is_for_rent && <p>Rental: ${car.rental_price_per_day}/day</p>}
-              </div>
-            ))}
+             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <p className="text-gray-500 text-xs uppercase font-bold">Total Cars</p>
+                <p className="text-2xl font-black">{cars.length}</p>
+             </div>
           </div>
-
-          <h2 className="text-2xl font-semibold mb-4 mt-8">Recent Rentals</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2">Car</th>
-                  <th className="px-4 py-2">User</th>
-                  <th className="px-4 py-2">Dates</th>
-                  <th className="px-4 py-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rentals.slice(0, 10).map(rental => (
-                  <tr key={rental.id}>
-                    <td className="px-4 py-2">{rental.car.title}</td>
-                    <td className="px-4 py-2">{rental.user.username}</td>
-                    <td className="px-4 py-2">{rental.start_date} - {rental.end_date}</td>
-                    <td className="px-4 py-2">{rental.status}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <h2 className="text-2xl font-semibold mb-4 mt-8">Recent Sales</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2">Car</th>
-                  <th className="px-4 py-2">Buyer</th>
-                  <th className="px-4 py-2">Price</th>
-                  <th className="px-4 py-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {purchases.slice(0, 10).map(purchase => (
-                  <tr key={purchase.id}>
-                    <td className="px-4 py-2">{purchase.car.title}</td>
-                    <td className="px-4 py-2">{purchase.buyer.username}</td>
-                    <td className="px-4 py-2">${purchase.price_at_purchase}</td>
-                    <td className="px-4 py-2">{purchase.payment_status}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {user.role === 'USER' && (
-        <div className="user-section">
-          <h2 className="text-2xl font-semibold mb-4">My Cars</h2>
-          {/* User specific content */}
-          <p>User dashboard content here</p>
+          {}
         </div>
       )}
     </div>
