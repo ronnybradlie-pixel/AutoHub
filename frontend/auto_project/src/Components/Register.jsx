@@ -58,15 +58,6 @@ const Register = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Phone</label>
-          <input
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            className="mt-1 w-full rounded border-gray-300 p-2"
-          />
-        </div>
-        <div>
           <label className="block text-sm font-medium text-gray-700">Password</label>
           <input
             type="password"

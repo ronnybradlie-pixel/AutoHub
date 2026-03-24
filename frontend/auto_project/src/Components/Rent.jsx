@@ -40,7 +40,7 @@ const Buy = () => {
 
   return (
     <div className="p-6 text-white">
-      <h1 className="text-3xl font-bold mb-6">Buy Cars</h1>
+      <h1 className="text-3xl font-bold mb-6">Rent a Car</h1>
 
       <div className="grid md:grid-cols-3 gap-6">
         {cars.map((car) => (

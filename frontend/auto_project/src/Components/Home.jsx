@@ -1,61 +1,29 @@
-import React from "react";
-import BMW from "../assets/images/M2-comp.png";
-import porsche from "../assets/images/porsche.png";
-import Mustang from "../assets/images/Mustang.png";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
-  const featuredCars = [
-    {
-      id: 1,
-      title: "2024 Toyota Camry",
-      subtitle: "Sedan • 4 seats • Automatic",
-      price: "ksh 8,900,000",
-      specs: [
-        { label: "Engine", value: "2.5L I4" },
-        { label: "MPG", value: "28 city / 39 hwy" },
-        { label: "Transmission", value: "8-speed automatic" },
-      ],
-      image:
-        "https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg?auto=compress&cs=tinysrgb&w=800",
-    },
-    {
-      id: 2,
-      title: "2023 Ford Mustang",
-      subtitle: "Coupe • 4 seats • Manual",
-      price: "ksh36,500,000",
-      specs: [
-        { label: "Engine", value: "5.0L V8" },
-        { label: "MPG", value: "15 city / 24 hwy" },
-        { label: "Transmission", value: "6-speed manual" },
-      ],
-      image:
-        "https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?auto=compress&cs=tinysrgb&w=800",
-    },
-    {
-      id: 3,
-      title: "2024 Tesla Model 3",
-      subtitle: "Sedan • 5 seats • Electric",
-      price: "ksh 62,590,200",
-      specs: [
-        { label: "Range", value: "325 miles" },
-        { label: "Drive", value: "AWD" },
-      ],
-      image:
-        "https://images.pexels.com/photos/1149831/pexels-photo-1149831.jpeg?auto=compress&cs=tinysrgb&w=800",
-    },
-        {
-      id: 4,
-      title: "2024 BMW M340i",
-      subtitle: "Sedan • 5 seats • Electric",
-      price: "ksh 42,500,000",
-      specs: [
-        { label: "Range", value: "325 miles" },
-        { label: "Drive", value: "AWD" },
-      ],
-      image:
-        "https://images.pexels.com/photos/1149831/pexels-photo-1149831.jpeg?auto=compress&cs=tinysrgb&w=800",
-    },
-  ];
+  const [featuredCars, setFeaturedCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchCars = async () => {
+      try {
+        const res = await fetch("/api/cars");
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+        const data = await res.json();
+        if (mounted) setFeaturedCars(data);
+      } catch (err) {
+        if (mounted) setError(err.message || "Failed to load cars");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchCars();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <div className="space-y-10 md:flex md:space-y-0 md:items-start md:gap-8 text-white">
