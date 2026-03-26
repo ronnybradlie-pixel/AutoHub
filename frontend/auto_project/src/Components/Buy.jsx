@@ -39,7 +39,7 @@ const Buy = () => {
   };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-black">
       <h1 className="text-3xl font-bold mb-6">Buy Cars</h1>
 
       <div className="grid md:grid-cols-3 gap-6">

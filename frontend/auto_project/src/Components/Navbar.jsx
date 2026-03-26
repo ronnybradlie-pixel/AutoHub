@@ -26,6 +26,9 @@ const Navbar = () => {
           <Link to="/about" className="hover:text-purple-700">
             About
           </Link>
+          <Link to="/profile" className="hover:text-purple-700">
+            Profile
+          </Link>
         </div>
 
         <div className="flex gap-3">

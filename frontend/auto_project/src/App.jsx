@@ -21,6 +21,7 @@ function App() {
           <Route path="rent" element={<Rent />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="profile" element={<Dashboard />} /> 
           <Route path="dashboard" element={<Dashboard />} />
           {/* Redirect unknown routes back to Home (landing page) */}
           <Route path="*" element={<Navigate to="/" replace />} />

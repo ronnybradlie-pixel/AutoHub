@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 
 const Home = () => {
-  const [allCars, setAllCars] = useState([]); // Store original data
+  const [allCars, setAllCars] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // --- FILTER STATES ---
   const [searchQuery, setSearchQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all"); // 'all', 'buy', 'rent'
+  const [categoryFilter, setCategoryFilter] = useState("all"); 
 
   useEffect(() => {
     let mounted = true;
@@ -24,7 +23,7 @@ const Home = () => {
           subtitle: car.dealership_name || "Verified Dealership",
           image: car.photo || car.image || "https://via.placeholder.com/400x300?text=No+Image",
           price: car.is_for_rent ? `${car.rental_price_per_day}/day` : `$${car.price?.toLocaleString()}`,
-          is_for_rent: car.is_for_rent, // Boolean from backend
+          is_for_rent: car.is_for_rent,
           specs: [
             { label: "Year", value: car.year },
             { label: "Type", value: car.is_for_rent ? "Rental" : "For Sale" },
@@ -43,7 +42,6 @@ const Home = () => {
     return () => { mounted = false; };
   }, []);
 
-  // --- FILTER LOGIC ---
   const filteredCars = useMemo(() => {
     return allCars.filter(car => {
       const matchesSearch = car.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -60,7 +58,6 @@ const Home = () => {
 
   return (
     <div className="space-y-10 md:flex md:space-y-0 md:items-start md:gap-8 text-white p-4">
-      {/* SIDEBAR WITH CATEGORY FILTERS */}
       <aside className="md:w-1/3 sticky top-4">
         <div className="rounded-2xl bg-gray-900/80 p-6 shadow-2xl backdrop-blur-md border border-white/10">
           <header className="mb-6">
@@ -79,16 +76,17 @@ const Home = () => {
               className={`cursor-pointer rounded-xl p-4 transition-all border ${categoryFilter === 'all' ? 'bg-purple-600/30 border-purple-500' : 'bg-transparent border-white/5 hover:bg-white/5'}`}
             >
               <h2 className="text-lg font-semibold">All Vehicles</h2>
-              <p className="text-xs text-white/60">View our entire collection.</p>
+              <p className="text-xs text-black/60">View our entire collection.</p>
             </div>
 
             {/* Filter Card: Buy */}
+         
             <div 
               onClick={() => setCategoryFilter('buy')}
               className={`cursor-pointer rounded-xl p-4 transition-all border ${categoryFilter === 'buy' ? 'bg-purple-600/30 border-purple-500' : 'bg-transparent border-white/5 hover:bg-white/5'}`}
             >
               <h2 className="text-lg font-semibold">Buy a Car</h2>
-              <p className="text-xs text-white/60">Search for cars to own permanently.</p>
+              <p className="text-xs text-black/60">Search for cars to own permanently.</p>
             </div>
 
             {/* Filter Card: Rent */}
@@ -105,7 +103,6 @@ const Home = () => {
 
       {/* MAIN CONTENT */}
       <main className="md:flex-1">
-        {/* SEARCH & HEADER */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-semibold capitalize">{categoryFilter} Cars</h2>
@@ -122,7 +119,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* CAR GRID */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredCars.map((car) => (
             <div key={car.id} className="rounded-2xl bg-gray-900/40 border border-white/5 p-4 flex flex-col hover:border-purple-500/50 transition-all group shadow-lg">
@@ -160,7 +156,6 @@ const Home = () => {
           ))}
         </div>
 
-        {/* EMPTY STATE */}
         {filteredCars.length === 0 && (
           <div className="text-center py-20 bg-gray-900/20 rounded-3xl border border-dashed border-white/10">
             <p className="text-white/40">No vehicles found matching your criteria.</p>
