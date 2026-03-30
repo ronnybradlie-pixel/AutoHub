@@ -7,7 +7,6 @@ import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
 import Buy from "./Components/Buy";
-import Rent from "./Components/Rent";
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Route path="cars" element={<Cars />} />
           <Route path="about" element={<About />} />
           <Route path="buy" element={<Buy />} />
-          <Route path="rent" element={<Rent />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Dashboard />} /> 
