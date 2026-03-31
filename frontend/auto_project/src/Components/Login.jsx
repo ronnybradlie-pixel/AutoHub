@@ -30,7 +30,7 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Login</h1>
+      <h1 className="text-white font-bold">Login</h1>
       {error && (
         <div className="rounded border border-red-300 bg-red-50 p-3 text-red-800">
           {error}
