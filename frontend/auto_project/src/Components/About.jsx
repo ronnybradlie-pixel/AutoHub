@@ -2,9 +2,7 @@ import React from "react";
 
 const About = () => {
   return (
-    /* Added text-white here to cover the entire component */
     <div className="space-y-12 text-white">
-      {/* Original AutoHub Section */}
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">About AutoHub</h1>
         <p className="text-white/80 max-w-2xl">
@@ -23,7 +21,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* New About Section */}
       <section className="about-section">
         <div className="about-container">
           <div className="about-text">

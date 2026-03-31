@@ -67,7 +67,7 @@ const Dashboard = () => {
 
           <section>
             <h2 className="text-xl font-bold mb-4 flex items-center">
-              <span className="mr-2">⏳</span> Pending Approvals
+              <span className="mr-2"></span> Pending Approvals
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCompanies.filter(c => c.status === 'PENDING').map(company => (
