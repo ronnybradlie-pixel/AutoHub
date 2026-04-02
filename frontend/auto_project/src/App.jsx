@@ -7,6 +7,7 @@ import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
 import Buy from "./Components/Buy";
+import Footer from "./Components/Footer";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Dashboard />} /> 
           <Route path="dashboard" element={<Dashboard />} />
-          {/* Redirect unknown routes back to Home (landing page) */}
+          <Route path="footer" element={<Footer />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

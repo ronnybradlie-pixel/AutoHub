@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
+import mustang from "../assets/images/mustang.png";
 
 const Buy = () => {
   const [cars, setCars] = useState([]);
@@ -20,14 +21,14 @@ const Buy = () => {
     },
     {
       id: "mock2",
-      brand: "Toyota",
-      model: "Land Cruiser V8",
+      brand: "MUSTANG",
+      model: "GT500",
       year: 2023,
       price: "12000000",
       fuel_type: "Diesel",
       transmission: "Automatic",
       mileage: "12,000",
-      images: [{ image_url: "https://images.unsplash.com/photo-1594568284297-7c64468d67b1?q=80&w=1000&auto=format&fit=crop", is_primary: true }]
+      images: [{ image_url: mustang, is_primary: true }]
     },
     {
       id: "mock3",
@@ -125,9 +126,6 @@ const Buy = () => {
                       </div>
                     </div>
 
-                    <button className="w-full py-3 bg-white text-black rounded-xl font-bold hover:bg-purple-600 hover:text-white transition-all duration-300">
-                      View Details
-                    </button>
                   </div>
                 </div>
               );

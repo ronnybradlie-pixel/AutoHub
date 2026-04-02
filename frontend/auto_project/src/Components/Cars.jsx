@@ -190,9 +190,7 @@ const Cars = () => {
                     </div>
                 </div>
 
-                <button className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 shadow-lg">
-                  VIEW DETAILS
-                </button>
+
               </div>
             </div>
           );

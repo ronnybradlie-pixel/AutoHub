@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import mustang from "../assets/images/mustang.png";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ const Home = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
-  // Safety Mock Data for when Backend is empty
   const mockCars = [
     {
       id: "m1",
@@ -31,15 +31,15 @@ const Home = () => {
     },
     {
       id: "m2",
-      brand: "Toyota",
-      model: "Land Cruiser V8",
+      brand: "MUSTANG",
+      model: "GT500",
       year: 2023,
       price: "12000000",
       is_for_rent: false,
       fuel_type: "Diesel",
       transmission: "Automatic",
       mileage: "12000",
-      images: [{ image_url: "https://images.unsplash.com/photo-1594568284297-7c64468d67b1?q=80&w=1000&auto=format&fit=crop", is_primary: true }]
+      images: [{ image_url: mustang, is_primary: true }]
     },
     {
       id: "m3",
@@ -187,7 +187,6 @@ const Home = () => {
                       {car.is_for_rent ? `KES ${car.rental_price_per_day}/day` : `KES ${parseInt(car.price).toLocaleString()}`}
                     </span>
                   </div>
-                  <button className="mt-auto w-full rounded-xl bg-purple-600 py-3 text-sm font-bold text-white hover:bg-purple-500 transition-all">View Details</button>
                 </div>
               </div>
             );

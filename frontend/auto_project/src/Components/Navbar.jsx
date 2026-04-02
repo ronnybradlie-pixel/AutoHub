@@ -38,13 +38,6 @@ const Navbar = () => {
           {/* Auth Buttons */}
           <div className="flex gap-3">
             <Link
-              to="/login"
-              className="px-5 py-2 border border-purple-500 text-black rounded-lg hover:bg-purple-50"
-            >
-              Login
-            </Link>
-
-            <Link
               to="/register"
               className="px-5 py-2 bg-[#A78BFA] text-white rounded-lg hover:bg-[#8B5CF6] transition-all shadow-md"
             >

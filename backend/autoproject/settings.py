@@ -26,12 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
-
-
-# Application definition
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
+ALLOWED_HOSTS = []# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,6 +47,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'corsheaders',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -164,6 +163,7 @@ AUTH_USER_MODEL = 'autoapp.User'
 
 # REST Framework config
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -171,6 +171,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'AutoHub API',
+    'DESCRIPTION': 'API documentation for AutoHub',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_PATCH': True,
+    'COMPONENT_SPLIT_REQUEST': True,
+
 }
 
 # CORS settings for frontend dev
@@ -183,3 +193,6 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
 ]    
+
+print(f"DEBUG value: {DEBUG}")
+print(f"DEBUG type: {type(DEBUG)}")

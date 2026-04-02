@@ -41,6 +41,7 @@ class Car(models.Model):
     fuel_type = models.CharField(max_length=50)
     transmission = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
+    CarImages = models.ManyToManyField('CarImage', blank=True, related_name='cars')
     rental_price_per_day = models.DecimalField(max_digits=10,decimal_places=2)
 
     is_for_sale = models.BooleanField(default=True)
