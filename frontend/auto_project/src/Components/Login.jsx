@@ -13,7 +13,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await api.post("/auto/users/login/", {
+      const response = await api.post("/auth/users/login/", {
         email,
         password,
       });

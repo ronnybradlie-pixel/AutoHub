@@ -53,7 +53,7 @@ const Profile = () => {
     if (loading) return <div className="p-10 text-center font-mono">INITIALIZING AUTOHUB...</div>;
 
     return (
-    <div className="flex min-h-screen bg-[#f8fafc] text-slate-900">
+    <div className="flex min-h-screen bg-gray-100 text-slate-900">
         <Sidebar />
 
         <main className="flex-1 p-6 lg:p-10">

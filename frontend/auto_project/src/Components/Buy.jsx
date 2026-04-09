@@ -66,10 +66,6 @@ const Buy = () => {
   return (
     <div className="flex bg-[#0a0a0a] min-h-screen text-white p-6 gap-8">
       {/* Sidebar - Refine Search */}
-      <div className="w-1/4 space-y-6 bg-[#161616] p-6 rounded-2xl border border-gray-800 h-fit">
-        <h2 className="text-purple-500 font-bold uppercase tracking-wider text-sm">Search</h2>
-        {/* ... (Your existing filter inputs like Brand, Min Year, etc. go here) ... */}
-      </div>
 
       {/* Main Content - Car Display */}
       <div className="flex-1">

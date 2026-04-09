@@ -125,7 +125,7 @@ const Home = () => {
 
         {/* ADVANCED FILTERS */}
         <div className="rounded-2xl bg-gray-900/80 p-6 border border-white/10">
-           <h3 className="text-sm font-black uppercase tracking-widest text-purple-400 mb-6">Refine Search</h3>
+           <h3 className="text-sm font-black uppercase tracking-widest text-purple-400 mb-6">Search</h3>
            <div className="space-y-5">
               <input 
                 type="text" placeholder="Brand & Model" value={brandFilter}

@@ -15,7 +15,7 @@ const Register = () => {
     setError(null);
 
     try {
-      await api.post("/auto/users/register/", {
+      await api.post("/auth/users/register/", {
         username: username,
         email: email,
         password: password,
