@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 const Mainlayout = () => {
   return (
-    <div className="min-h-screen bg-gray-900/80 text-black">
+    <div className="min-h-screen bg-white text-black">
       <Navbar />
       <main className="w-full px-4 py-8">
         <Outlet />

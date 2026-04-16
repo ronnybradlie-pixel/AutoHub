@@ -98,7 +98,7 @@ const Home = () => {
   if (loading) return <div className="p-20 text-center text-white animate-pulse">Loading AutoHub Inventory...</div>;
 
   return (
-    <div className="space-y-10 md:flex md:space-y-0 md:items-start md:gap-8 text-white p-4 bg-black min-h-screen">
+    <div className="space-y-10 md:flex md:space-y-0 md:items-start md:gap-8 text-white p-4 bg-white min-h-screen">
       {/* SIDEBAR */}
       <aside className="md:w-1/3 sticky top-4 space-y-6">
         <div className="rounded-2xl bg-gray-900/80 p-6 shadow-2xl backdrop-blur-md border border-white/10">

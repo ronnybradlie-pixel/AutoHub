@@ -6,18 +6,19 @@ import About from "./Components/About";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
-import Buy from "./Components/Buy";
+import AuthContext, { AuthProvider } from "./Components/AuthContext";
 import Footer from "./Components/Footer";
 
 function App() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Mainlayout />}>
           <Route index element={<Home />} />
           <Route path="cars" element={<Cars />} />
           <Route path="about" element={<About />} />
-          <Route path="buy" element={<Buy />} />
+          <Route path="AuthContext" element={<AuthContext />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Dashboard />} /> 
@@ -27,6 +28,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+      </AuthProvider>
   );
 }
 
